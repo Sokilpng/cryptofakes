@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Token Purchase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background-color: #111;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #2a2a2a;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #e0e0e0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: #3498db;
+            font-size: 16px;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+        
+        select:focus, input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        .info-box {
+            background: #1a1a1a;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+        
+        .price-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 6px 0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: #3498db;
+            margin-bottom: 4px;
+        }
+        
+        .logo-subtitle {
+            color: #666;
+            font-size: 13px;
+            font-weight: 400;
+        }
+        
+        .payment-section {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+        
+        .payment-item {
+            margin-bottom: 16px;
+        }
+        
+        .payment-label {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 6px;
+            display: block;
+        }
+        
+        .payment-value {
+            display: flex;
+            align-items: center;
+            background: #0a0a0a;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            font-family: 'SF Mono', Monaco, Consolas, monospace;
+            font-size: 14px;
+        }
+        
+        .payment-text {
+            flex: 1;
+            word-break: break-all;
+            padding-right: 10px;
+        }
+        
+        .address-text {
+            color: #2ecc71;
+        }
+        
+        .comment-text {
+            color: #f39c12;
+        }
+        
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #3498db;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            width: auto;
+            margin: 0;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+        
+        .timer {
+            text-align: center;
+            font-size: 20px;
+            margin: 16px 0;
+            color: #e74c3c;
+            font-weight: 600;
+            padding: 12px;
+            background: #0a0a0a;
+            border-radius: 8px;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 50%;
+            line-height: 32px;
+            margin: 0 auto 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .step.active .step-number {
+            background-color: #3498db;
+        }
+        
+        .step.completed .step-number {
+            background-color: #2ecc71;
+        }
+        
+        .step-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: #999;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            height: 2px;
+            background-color: #333;
+            top: 16px;
+            left: 0;
+            right: 0;
+            z-index: 1;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #2ecc71;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        
+        .summary-label {
+            font-weight: 500;
+            color: #ccc;
+        }
+        
+        .summary-value {
+            font-weight: 500;
+            color: #3498db;
+        }
+        
+        #checkPayment {
+            background: #2ecc71;
+        }
+        
+        #checkPayment:hover {
+            background: #27ae60;
+        }
+        
+        #backToSelection {
+            background: #666;
+        }
+        
+        #backToSelection:hover {
+            background: #555;
+        }
+        
+        .important-note {
+            background: #2a2a2a;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 13px;
+            color: #f39c12;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 4px;
+            display: none;
+        }
+        
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .logo-text {
+                font-size: 24px;
+            }
+            
+            .payment-value {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-text">Fake Token Exchange</div>
+            <div class="logo-subtitle">Безопасная покупка токенов</div>
+        </div>
+        
+        <div class="step-indicator">
+            <div class="progress-bar"><div class="progress" id="progress"></div></div>
+            <div class="step completed" id="step1">
+                <div class="step-number">1</div>
+                <div class="step-title">Выбор</div>
+            </div>
+            <div class="step active" id="step2">
+                <div class="step-number">2</div>
+                <div class="step-title">Оплата</div>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <div class="step-title">Готово</div>
+            </div>
+        </div>
+        
+        <div id="selectionSection">
+            <h1>Покупка Fake токенов</h1>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-coins"></i>
+                    Выберите токен
+                </div>
+                <select id="tokenSelect">
+                    <option value="">-- Выберите токен --</option>
+                    <option value="fakeTon">Fake-TON</option>
+                    <option value="fakeUsdt">Fake-USDT</option>
+                </select>
+                <div class="error-message" id="tokenError">Пожалуйста, выберите токен</div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-hashtag"></i>
+                    Количество (от 500)
+                </div>
+                <input type="number" id="amountInput" min="500" placeholder="Введите количество">
+                <div class="error-message" id="amountError">Минимальное количество - 500 токенов</div>
+                <div class="price-info">
+                    <span>Примерная стоимость:</span>
+                    <span id="previewCost">—</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-wallet"></i>
+                    Адрес TON кошелька
+                </div>
+                <input type="text" id="addressInput" placeholder="Введите адрес TON">
+                <div class="error-message" id="addressError">Пожалуйста, введите корректный адрес</div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-money-bill-wave"></i>
+                    Валюта оплаты
+                </div>
+                <select id="currencySelect">
+                    <option value="">-- Выберите валюту --</option>
+                    <option value="ton">TON</option>
+                    <option value="usdt">USDT (в сети TON)</option>
+                </select>
+                <div class="error-message" id="currencyError">Пожалуйста, выберите валюту</div>
+            </div>
+            
+            <div class="info-box">
+                <div class="price-info">
+                    <span>Курс TON:</span>
+                    <span><strong>$3.2</strong></span>
+                </div>
+                <div class="price-info">
+                    <span>Курс USDT:</span>
+                    <span><strong>$1.0</strong></span>
+                </div>
+                <div class="price-info">
+                    <span>500 Fake-TON:</span>
+                    <span><strong>$1.25</strong></span>
+                </div>
+                <div class="price-info">
+                    <span>500 Fake-USDT:</span>
+                    <span><strong>$1.00</strong></span>
+                </div>
+            </div>
+            
+            <div id="paymentDetails" class="hidden">
+                <div class="section">
+                    <div class="section-title">Детали оплаты</div>
+                    <div id="calculatedAmount"></div>
+                    <button id="continueToPayment">
+                        <i class="fas fa-arrow-right"></i> Перейти к оплате
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="paymentSection" class="hidden">
+            <h1>Оплата заказа</h1>
+            
+            <div class="payment-section">
+                <div class="section-title">
+                    <i class="fas fa-receipt"></i> Детали заказа
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Токен:</span>
+                    <span class="summary-value" id="orderToken">Fake-TON</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Количество:</span>
+                    <span class="summary-value" id="orderAmount">500</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Ваш адрес:</span>
+                    <span class="summary-value" id="orderAddress">EQABC...xyz</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Способ оплаты:</span>
+                    <span class="summary-value" id="orderCurrency">TON</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Сумма к оплате:</span>
+                    <span class="summary-value" id="orderTotal">0.3906 TON</span>
+                </div>
+            </div>
+            
+            <div class="payment-section">
+                <div class="section-title">
+                    <i class="fas fa-money-check-alt"></i> Реквизиты для оплаты
+                </div>
+                
+                <div class="payment-item">
+                    <div class="payment-label">Адрес для перевода:</div>
+                    <div class="payment-value">
+                        <span class="payment-text address-text" id="paymentAddressText">UQDuTe6OxMiHsPCLx2pyP-yOcMwPJA4t8t9ZZR_sYBkOHbb-</span>
+                        <button class="copy-btn" data-target="paymentAddressText">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="payment-item">
+                    <div class="payment-label">Комментарий к платежу:</div>
+                    <div class="payment-value">
+                        <span class="payment-text comment-text" id="paymentCommentText">a7F3k9pL2mQ8zR4t</span>
+                        <button class="copy-btn" data-target="paymentCommentText">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="important-note">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Для зачисления средств укажите этот комментарий при переводе
+                </div>
+                
+                <div class="timer" id="timer">
+                    <i class="fas fa-clock"></i> <span id="timerText">14:59</span>
+                </div>
+            </div>
+            
+            <button id="checkPayment">
+                <i class="fas fa-sync-alt"></i> Проверить оплату
+            </button>
+            <button id="backToSelection">
+                <i class="fas fa-arrow-left"></i> Назад к выбору
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tokenSelect = document.getElementById('tokenSelect');
+            const amountInput = document.getElementById('amountInput');
+            const addressInput = document.getElementById('addressInput');
+            const currencySelect = document.getElementById('currencySelect');
+            const paymentDetails = document.getElementById('paymentDetails');
+            const calculatedAmount = document.getElementById('calculatedAmount');
+            const continueToPayment = document.getElementById('continueToPayment');
+            const selectionSection = document.getElementById('selectionSection');
+            const paymentSection = document.getElementById('paymentSection');
+            const progress = document.getElementById('progress');
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            const previewCost = document.getElementById('previewCost');
+            
+            // Элементы ошибок
+            const tokenError = document.getElementById('tokenError');
+            const amountError = document.getElementById('amountError');
+            const addressError = document.getElementById('addressError');
+            const currencyError = document.getElementById('currencyError');
+            
+            // Элементы оплаты
+            const orderToken = document.getElementById('orderToken');
+            const orderAmount = document.getElementById('orderAmount');
+            const orderAddress = document.getElementById('orderAddress');
+            const orderCurrency = document.getElementById('orderCurrency');
+            const orderTotal = document.getElementById('orderTotal');
+            const paymentAddressText = document.getElementById('paymentAddressText');
+            const paymentCommentText = document.getElementById('paymentCommentText');
+            const timerText = document.getElementById('timerText');
+            const checkPayment = document.getElementById('checkPayment');
+            const backToSelection = document.getElementById('backToSelection');
+            
+            let selectedToken = '';
+            let selectedCurrency = '';
+            let amount = 0;
+            let userAddress = '';
+            let timeLeft = 15 * 60;
+            let timerInterval;
+            
+            // Копирование текста
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    const textElement = document.getElementById(target);
+                    const text = textElement.textContent;
+                    
+                    navigator.clipboard.writeText(text).then(() => {
+                        const originalIcon = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-check"></i>';
+                        
+                        setTimeout(() => {
+                            this.innerHTML = originalIcon;
+                        }, 2000);
+                    });
+                });
+            });
+            
+            // Обновление предварительной стоимости
+            amountInput.addEventListener('input', updatePreviewCost);
+            tokenSelect.addEventListener('change', updatePreviewCost);
+            
+            function updatePreviewCost() {
+                const token = tokenSelect.value;
+                const amount = parseInt(amountInput.value) || 0;
+                
+                if (token && amount >= 500) {
+                    if (token === 'fakeTon') {
+                        previewCost.textContent = `~${(amount * 0.0025).toFixed(4)} TON`;
+                    } else if (token === 'fakeUsdt') {
+                        previewCost.textContent = `~${(amount * 0.002).toFixed(4)} USDT`;
+                    }
+                } else {
+                    previewCost.textContent = '—';
+                }
+                
+                validateForm();
+            }
+            
+            // Валидация формы
+            function validateForm() {
+                let isValid = true;
+                
+                // Сбросить ошибки
+                tokenError.style.display = 'none';
+                amountError.style.display = 'none';
+                addressError.style.display = 'none';
+                currencyError.style.display = 'none';
+                
+                // Проверка токена
+                if (!tokenSelect.value) {
+                    tokenError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Проверка количества
+                const amountValue = parseInt(amountInput.value);
+                if (isNaN(amountValue) || amountValue < 500) {
+                    amountError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Проверка адреса
+                if (!addressInput.value || addressInput.value.length < 10) {
+                    addressError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Проверка валюты
+                if (!currencySelect.value) {
+                    currencyError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Показать/скрыть детали оплаты
+                if (isValid) {
+                    calculatePayment();
+                    paymentDetails.classList.remove('hidden');
+                } else {
+                    paymentDetails.classList.add('hidden');
+                }
+                
+                return isValid;
+            }
+            
+            // Расчет суммы оплаты
+            function calculatePayment() {
+                selectedToken = tokenSelect.value;
+                amount = parseInt(amountInput.value);
+                userAddress = addressInput.value;
+                selectedCurrency = currencySelect.value;
+                
+                let cost = 0;
+                let currencySymbol = '';
+                
+                if (selectedToken === 'fakeTon') {
+                    cost = amount * 0.0025;
+                    currencySymbol = 'TON';
+                } else if (selectedToken === 'fakeUsdt') {
+                    cost = amount * 0.002;
+                    currencySymbol = 'USDT';
+                }
+                
+                // Конвертация в выбранную валюту оплаты
+                if (selectedCurrency === 'ton' && selectedToken === 'fakeUsdt') {
+                    cost = cost * 0.32; // Примерный курс USDT к TON
+                    currencySymbol = 'TON';
+                } else if (selectedCurrency === 'usdt' && selectedToken === 'fakeTon') {
+                    cost = cost * 3.2; // Примерный курс TON к USDT
+                    currencySymbol = 'USDT';
+                }
+                
+                calculatedAmount.innerHTML = `
+                    <div class="price-info">
+                        <span>Сумма к оплате:</span>
+                        <span><strong>${cost.toFixed(4)} ${currencySymbol}</strong></span>
+                    </div>
+                `;
+            }
+            
+            // Переход к оплате
+            continueToPayment.addEventListener('click', function() {
+                if (validateForm()) {
+                    // Обновить детали заказа
+                    orderToken.textContent = selectedToken === 'fakeTon' ? 'Fake-TON' : 'Fake-USDT';
+                    orderAmount.textContent = amount.toLocaleString();
+                    orderAddress.textContent = userAddress;
+                    orderCurrency.textContent = selectedCurrency === 'ton' ? 'TON' : 'USDT';
+                    
+                    // Пересчитать сумму для отображения
+                    let cost = 0;
+                    let currencySymbol = '';
+                    
+                    if (selectedToken === 'fakeTon') {
+                        cost = amount * 0.0025;
+                        currencySymbol = 'TON';
+                    } else if (selectedToken === 'fakeUsdt') {
+                        cost = amount * 0.002;
+                        currencySymbol = 'USDT';
+                    }
+                    
+                    if (selectedCurrency === 'ton' && selectedToken === 'fakeUsdt') {
+                        cost = cost * 0.32;
+                        currencySymbol = 'TON';
+                    } else if (selectedCurrency === 'usdt' && selectedToken === 'fakeTon') {
+                        cost = cost * 3.2;
+                        currencySymbol = 'USDT';
+                    }
+                    
+                    orderTotal.textContent = `${cost.toFixed(4)} ${currencySymbol}`;
+                    
+                    // Сгенерировать случайный комментарий
+                    const comment = generateRandomComment();
+                    paymentCommentText.textContent = comment;
+                    
+                    // Показать раздел оплаты, скрыть выбор
+                    selectionSection.classList.add('hidden');
+                    paymentSection.classList.remove('hidden');
+                    
+                    // Обновить индикатор шагов
+                    step2.classList.add('completed');
+                    step3.classList.add('active');
+                    progress.style.width = '100%';
+                    
+                    // Запустить таймер
+                    startTimer();
+                }
+            });
+            
+            // Назад к выбору
+            backToSelection.addEventListener('click', function() {
+                paymentSection.classList.add('hidden');
+                selectionSection.classList.remove('hidden');
+                
+                // Обновить индикатор шагов
+                step2.classList.remove('completed');
+                step3.classList.remove('active');
+                progress.style.width = '0%';
+                
+                // Остановить таймер
+                clearInterval(timerInterval);
+            });
+            
+            // Проверить оплату
+            checkPayment.addEventListener('click', function() {
+                alert('Платеж проверяется...\n\nВ реальном приложении здесь будет проверка блокчейна на наличие транзакции.');
+            });
+            
+            // Генерация случайного комментария
+            function generateRandomComment() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let result = '';
+                for (let i = 0; i < 12; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
+            
+            // Таймер
+            function startTimer() {
+                timeLeft = 15 * 60;
+                updateTimer();
+                
+                clearInterval(timerInterval);
+                timerInterval = setInterval(function() {
+                    timeLeft--;
+                    updateTimer();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        alert('Время на оплату истекло. Пожалуйста, начните заново.');
+                        backToSelection.click();
+                    }
+                }, 1000);
+            }
+            
+            function updateTimer() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerText.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            // Валидация при изменении полей
+            tokenSelect.addEventListener('change', validateForm);
+            amountInput.addEventListener('input', validateForm);
+            addressInput.addEventListener('input', validateForm);
+            currencySelect.addEventListener('change', validateForm);
+        });
+    </script>
+</body>
+</html>
